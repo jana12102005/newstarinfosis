@@ -18,15 +18,20 @@ class Config:
     if not raw_db_url:
         raise ValueError("DATABASE_URL is not set")
 
-    # Fix driver
+    # Fix driver: mysql:// → mysql+pymysql://
     if raw_db_url.startswith("mysql://"):
         raw_db_url = raw_db_url.replace("mysql://", "mysql+pymysql://", 1)
 
-    # ✅ Use URL directly (includes ssl-mode)
+    # ✅ DO NOT REMOVE ssl-mode (Aiven requires it)
     SQLALCHEMY_DATABASE_URI = raw_db_url
 
-    # ✅ REMOVE custom SSL block (let URL handle it)
+    # ✅ Correct SSL config for Aiven
     SQLALCHEMY_ENGINE_OPTIONS = {
+        "connect_args": {
+            "ssl": {
+                "ssl_mode": "REQUIRED"
+            }
+        },
         "pool_pre_ping": True,
         "pool_recycle": 280,
     }
@@ -44,7 +49,7 @@ class Config:
     MAIL_DEFAULT_SENDER = MAIL_USERNAME
 
     # =========================
-    # TELEGRAM
+    # TELEGRAM (OPTIONAL)
     # =========================
     TELEGRAM_BOT_TOKEN = os.environ.get('TELEGRAM_BOT_TOKEN', '')
     TELEGRAM_CHAT_ID = os.environ.get('TELEGRAM_CHAT_ID', '')

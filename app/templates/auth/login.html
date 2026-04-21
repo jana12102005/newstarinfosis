@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Login – NewStar Infosis{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card" data-aos="fade-up">
+    <div class="auth-logo">
+      <span class="logo-star">★</span>
+      <h1 class="auth-title">Welcome Back</h1>
+      <p class="auth-subtitle">Login to your NewStar Infosis account</p>
+    </div>
+    <form class="auth-form" method="POST" action="{{ url_for('auth.login') }}">
+      <div class="input-wrap">
+        <i class="fas fa-envelope"></i>
+        <input type="email" name="email" placeholder="Email Address" required>
+      </div>
+      <div class="input-wrap">
+        <i class="fas fa-lock"></i>
+        <input type="password" name="password" placeholder="Password" required>
+      </div>
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;">
+        <i class="fas fa-sign-in-alt"></i> Login
+      </button>
+    </form>
+    <div class="auth-footer">
+      Don't have an account? <a href="{{ url_for('auth.register') }}">Register here</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

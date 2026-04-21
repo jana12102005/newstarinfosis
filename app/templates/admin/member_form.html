@@ -1,0 +1,40 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if member else 'Add' }} Team Member – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header">
+  <h1>{{ 'Edit' if member else 'Add' }} <span class="gold">Team Member</span></h1>
+</div>
+
+<div class="card-box" style="max-width:600px;">
+  <form method="POST" class="admin-form">
+    <div class="form-group">
+      <label>Full Name *</label>
+      <input type="text" name="name" value="{{ member.name if member else '' }}" placeholder="e.g. Arun Kumar" required>
+    </div>
+    <div class="form-group">
+      <label>Role / Designation *</label>
+      <input type="text" name="role" value="{{ member.role if member else '' }}" placeholder="e.g. AI/ML Engineer" required>
+    </div>
+    <div class="form-group">
+      <label>Portfolio Link <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+      <input type="url" name="portfolio_link" value="{{ member.portfolio_link if member else '' }}" placeholder="https://portfolio.com/arun">
+    </div>
+    <div class="form-group">
+      <label>Profile Image URL <span style="color:var(--muted);font-weight:400;">(optional)</span></label>
+      <input type="url" name="image" value="{{ member.image if member else '' }}" placeholder="https://example.com/photo.jpg">
+    </div>
+    <div class="form-group">
+      <label>Display Order <span style="color:var(--muted);font-weight:400;">(lower = first)</span></label>
+      <input type="number" name="order_index" value="{{ member.order_index if member else 0 }}" min="0">
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> {{ 'Update Member' if member else 'Add Member' }}
+      </button>
+      <a href="{{ url_for('admin.team') }}" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

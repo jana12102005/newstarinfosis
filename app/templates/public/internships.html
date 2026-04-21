@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+{% block title %}Internships – NewStar Infosis{% endblock %}
+{% block content %}
+
+<div class="internship-hero">
+  <div class="container">
+    <p class="section-subtitle" data-aos="fade-up">JOIN OUR TEAM</p>
+    <h1 class="section-title" data-aos="fade-up" data-aos-delay="100">Internship <span>Programs</span></h1>
+    <div class="divider" data-aos="fade-up" data-aos-delay="150"></div>
+    <p style="color:var(--muted);max-width:650px;margin:0 auto 24px;" data-aos="fade-up" data-aos-delay="200">
+      Gain hands-on experience working on real AI/ML, IoT, Bioinformatics, and Web Development projects. Available across <strong class="gold">Namakkal, Chennai</strong> and <strong class="gold">Villupuram</strong>.
+    </p>
+    <div class="internship-badges" data-aos="fade-up" data-aos-delay="250">
+      <span class="badge paid">💰 Paid Internships Available</span>
+      <span class="badge">🎓 Certificate Provided</span>
+      <span class="badge">🤝 Mentorship Included</span>
+      <span class="badge">🚀 Real Project Experience</span>
+      <span class="badge">📍 Namakkal · Chennai · Villupuram</span>
+    </div>
+  </div>
+</div>
+
+<!-- What you'll get -->
+<section class="section-sm" style="padding:60px 24px;">
+  <div class="container">
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;margin-bottom:60px;">
+      <div class="service-card" data-aos="fade-up" data-aos-delay="0">
+        <div class="service-icon">🧠</div>
+        <div class="service-title">Learn by Doing</div>
+        <p class="service-desc">Work on real client projects under expert guidance. No dummy tasks — only real deliverables.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="100">
+        <div class="service-icon">💼</div>
+        <div class="service-title">Industry Exposure</div>
+        <p class="service-desc">Get exposure to industry practices, project management, client communication, and agile workflows.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="200">
+        <div class="service-icon">📜</div>
+        <div class="service-title">Certified</div>
+        <p class="service-desc">Receive an official NewStar Infosis internship certificate upon successful completion.</p>
+      </div>
+      <div class="service-card" data-aos="fade-up" data-aos-delay="300">
+        <div class="service-icon">💰</div>
+        <div class="service-title">Paid Option</div>
+        <p class="service-desc">Selected candidates in paid tracks receive a stipend. Merit-based selection for paid positions.</p>
+      </div>
+    </div>
+
+    <!-- Application Form -->
+    <div class="text-center" data-aos="fade-up" style="margin-bottom:40px;">
+      <h2 class="section-title">Apply <span>Now</span></h2>
+      <div class="divider"></div>
+    </div>
+    <div class="internship-form-section" style="padding:0;">
+      <div class="form-card" data-aos="fade-up">
+        <form method="POST" action="{{ url_for('public.internships') }}">
+          <div class="form-grid">
+            <div class="form-group">
+              <label>Full Name *</label>
+              <input type="text" name="name" placeholder="Your full name" required>
+            </div>
+            <div class="form-group">
+              <label>Email Address *</label>
+              <input type="email" name="email" placeholder="your@email.com" required>
+            </div>
+            <div class="form-group">
+              <label>Phone Number *</label>
+              <input type="tel" name="phone" placeholder="+91 XXXXX XXXXX" required>
+            </div>
+            <div class="form-group">
+              <label>College / University *</label>
+              <input type="text" name="college" placeholder="Your institution name" required>
+            </div>
+            <div class="form-group">
+              <label>Preferred Location *</label>
+              <select name="location" required>
+                <option value="">Select location</option>
+                <option value="Namakkal">Namakkal, Tamil Nadu</option>
+                <option value="Chennai">Chennai, Tamil Nadu</option>
+                <option value="Villupuram">Villupuram, Tamil Nadu</option>
+                <option value="Remote">Remote</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>Domain *</label>
+              <select name="domain" required>
+                <option value="">Select your domain</option>
+                <option value="AI / ML">AI / ML</option>
+                <option value="Bioinformatics">Bioinformatics</option>
+                <option value="IoT">IoT</option>
+                <option value="Web Development">Web Development</option>
+                <option value="UI/UX">UI/UX Design</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label>Internship Type *</label>
+              <select name="internship_type" required>
+                <option value="unpaid">Unpaid (Certificate)</option>
+                <option value="paid">Paid (Stipend + Certificate)</option>
+              </select>
+            </div>
+            <div class="form-group full">
+              <label>About Yourself / Why You Want to Join</label>
+              <textarea name="message" placeholder="Tell us about your skills, projects, and why you want to intern at NewStar Infosis..."></textarea>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;margin-top:24px;font-size:1rem;padding:16px;">
+            <i class="fas fa-paper-plane"></i> Submit Application
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% endblock %}

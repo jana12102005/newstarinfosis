@@ -1,0 +1,46 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}{{ 'Edit' if project else 'Add' }} Project – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header">
+  <h1>{{ 'Edit' if project else 'Add' }} <span class="gold">Project</span></h1>
+  <p>{{ 'Update the project details below.' if project else 'Fill in the details to add a new project to the marketplace.' }}</p>
+</div>
+
+<div class="card-box" style="max-width:660px;">
+  <form method="POST" class="admin-form">
+    <div class="form-group">
+      <label>Project Name *</label>
+      <input type="text" name="name" value="{{ project.name if project else '' }}" placeholder="e.g. Smart Disease Detection using CNN" required>
+    </div>
+    <div class="form-group">
+      <label>Domain *</label>
+      <select name="domain">
+        {% set domains = ['AI / ML', 'Bioinformatics', 'IoT', 'Web Development', 'UI/UX', 'General'] %}
+        {% for d in domains %}
+          <option value="{{ d }}" {% if project and project.domain == d %}selected{% endif %}>{{ d }}</option>
+        {% endfor %}
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Price (₹) *</label>
+      <input type="number" name="price" value="{{ project.price if project else '' }}" placeholder="e.g. 3500" min="0" step="0.01" required>
+    </div>
+    <div class="form-group">
+      <label>Description *</label>
+      <textarea name="description" rows="5" placeholder="Describe the project, technologies used, deliverables, etc." required>{{ project.description if project else '' }}</textarea>
+    </div>
+    <div class="form-group">
+      <label>Image URL <span style="color:var(--muted);font-weight:400;">(optional – paste a direct image link)</span></label>
+      <input type="url" name="image" value="{{ project.image if project else '' }}" placeholder="https://example.com/image.jpg">
+    </div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:8px;">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> {{ 'Update Project' if project else 'Add Project' }}
+      </button>
+      <a href="{{ url_for('admin.projects') }}" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Cancel</a>
+    </div>
+  </form>
+</div>
+
+{% endblock %}

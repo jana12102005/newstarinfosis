@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}Projects – NewStar Infosis{% endblock %}
+{% block content %}
+
+<section style="padding:120px 24px 60px;background:radial-gradient(ellipse 60% 40% at 50% 30%,rgba(212,175,55,0.06),transparent);text-align:center;">
+  <div class="container">
+    <p class="section-subtitle" data-aos="fade-up">OUR PORTFOLIO</p>
+    <h1 class="section-title" data-aos="fade-up" data-aos-delay="100">All <span>Projects</span></h1>
+    <div class="divider" data-aos="fade-up" data-aos-delay="150"></div>
+    <p style="color:var(--muted);max-width:600px;margin:0 auto 40px;" data-aos="fade-up" data-aos-delay="200">
+      Browse our collection of premium, publication-ready projects across AI/ML, Bioinformatics, IoT, and Web Development.
+    </p>
+
+    <!-- Domain Filter -->
+    {% if domains %}
+    <div style="display:flex;flex-wrap:wrap;gap:10px;justify-content:center;" data-aos="fade-up" data-aos-delay="250">
+      <a href="{{ url_for('public.projects') }}" class="domain-tag {% if not selected %}" style="background:rgba(212,175,55,0.2);border-color:var(--gold);{% endif %}">All</a>
+      {% for d in domains %}
+        <a href="{{ url_for('public.projects', domain=d) }}" class="domain-tag {% if selected == d %}" style="background:rgba(212,175,55,0.2);border-color:var(--gold);{% endif %}">{{ d }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="section-sm" style="padding-bottom:80px;">
+  <div class="container">
+    {% if projects %}
+    <div class="projects-grid">
+      {% for p in projects %}
+      <div class="project-card" data-aos="fade-up" data-aos-delay="{{ loop.index0 % 3 * 80 }}">
+        <div class="project-img">
+          {% if p.image %}
+            <img src="{{ p.image }}" alt="{{ p.name }}">
+          {% else %}
+            <i class="fas fa-code"></i>
+          {% endif %}
+        </div>
+        <div class="project-body">
+          <div class="project-domain">{{ p.domain }}</div>
+          <div class="project-name">{{ p.name }}</div>
+          <p class="project-desc">{{ p.description[:120] }}{% if p.description|length > 120 %}…{% endif %}</p>
+          <div class="project-footer">
+            <div class="project-price">₹{{ "%.0f"|format(p.price) }} <span>/ project</span></div>
+            {% if current_user.is_authenticated %}
+              <a href="{{ url_for('user.request_project', project_id=p.id) }}" class="btn btn-primary" style="padding:8px 18px;font-size:0.82rem;">
+                <i class="fas fa-rocket"></i> Request
+              </a>
+            {% else %}
+              <a href="{{ url_for('auth.login') }}" class="btn btn-outline" style="padding:8px 18px;font-size:0.82rem;">Login</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center" style="padding:80px 0;">
+      <i class="fas fa-folder-open" style="font-size:3rem;color:var(--gold);opacity:0.3;display:block;margin-bottom:16px;"></i>
+      <p style="color:var(--muted);">No projects found. Check back soon!</p>
+      <a href="{{ url_for('public.projects') }}" class="btn btn-ghost" style="margin-top:16px;">Clear Filter</a>
+    </div>
+    {% endif %}
+  </div>
+</section>
+
+{% endblock %}

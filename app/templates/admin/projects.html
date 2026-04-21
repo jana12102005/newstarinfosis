@@ -1,0 +1,52 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Manage Projects – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+  <div>
+    <h1>Manage <span class="gold">Projects</span></h1>
+    <p>Add, edit, or delete projects from the marketplace.</p>
+  </div>
+  <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Project</a>
+</div>
+
+<div class="card-box">
+  {% if projects %}
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>Name</th><th>Domain</th><th>Price</th><th>Description</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for p in projects %}
+        <tr>
+          <td style="color:var(--muted);">{{ p.id }}</td>
+          <td style="font-weight:600;color:var(--white);">{{ p.name }}</td>
+          <td><span class="badge-status status-reviewing">{{ p.domain }}</span></td>
+          <td class="gold" style="font-family:var(--font-display);">₹{{ "%.0f"|format(p.price) }}</td>
+          <td style="color:var(--muted);max-width:260px;">{{ p.description[:70] }}{% if p.description|length > 70 %}…{% endif %}</td>
+          <td>
+            <div style="display:flex;gap:8px;">
+              <a href="{{ url_for('admin.edit_project', pid=p.id) }}" class="btn btn-ghost" style="padding:5px 12px;font-size:0.78rem;"><i class="fas fa-edit"></i> Edit</a>
+              <form method="POST" action="{{ url_for('admin.delete_project', pid=p.id) }}" onsubmit="return confirm('Delete this project?')">
+                <button type="submit" class="btn" style="padding:5px 12px;font-size:0.78rem;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:48px 0;">
+    <i class="fas fa-code" style="font-size:2.5rem;color:var(--gold);opacity:0.3;display:block;margin-bottom:12px;"></i>
+    <p style="color:var(--muted);">No projects yet. Add your first project!</p>
+    <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary" style="margin-top:16px;">Add Project</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Verify OTP – NewStar Infosis{% endblock %}
+{% block content %}
+<div class="auth-page">
+  <div class="auth-card" data-aos="fade-up" style="max-width:500px;">
+    <div class="auth-logo">
+      <span class="logo-star" style="font-size:2.5rem;">✉</span>
+      <h1 class="auth-title">Verify Your Email</h1>
+      <p class="auth-subtitle">We sent a 6-digit OTP to your email. Enter it below.</p>
+    </div>
+    <form class="auth-form" method="POST" action="{{ url_for('auth.verify_otp') }}" id="otpForm">
+      <div class="otp-inputs" id="otpContainer">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+        <input type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" autocomplete="off">
+      </div>
+      <input type="hidden" name="otp" id="otpFull">
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;" id="verifyBtn">
+        <i class="fas fa-check-circle"></i> Verify OTP
+      </button>
+    </form>
+    <div class="auth-footer">
+      Didn't get it? <a href="{{ url_for('auth.resend_otp') }}">Resend OTP</a> |
+      <a href="{{ url_for('auth.register') }}">Back to Register</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Auto-assemble OTP before submit
+document.getElementById('otpForm').addEventListener('submit', function() {
+  const inputs = document.querySelectorAll('.otp-inputs input');
+  document.getElementById('otpFull').value = [...inputs].map(i => i.value).join('');
+});
+</script>
+{% endblock %}

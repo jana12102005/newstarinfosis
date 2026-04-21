@@ -1,0 +1,65 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Manage Team – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+  <div>
+    <h1>Manage <span class="gold">Team</span></h1>
+    <p>Add or update team members shown on the public website.</p>
+  </div>
+  <a href="{{ url_for('admin.add_member') }}" class="btn btn-primary"><i class="fas fa-user-plus"></i> Add Member</a>
+</div>
+
+<div class="card-box">
+  {% if members %}
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>Name</th><th>Role</th><th>Portfolio</th><th>Order</th><th>Actions</th></tr>
+      </thead>
+      <tbody>
+        {% for m in members %}
+        <tr>
+          <td style="color:var(--muted);">{{ m.id }}</td>
+          <td>
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold-dark),var(--gold));display:flex;align-items:center;justify-content:center;font-family:var(--font-display);color:var(--black);font-weight:700;font-size:0.9rem;overflow:hidden;flex-shrink:0;">
+                {% if m.image %}<img src="{{ m.image }}" style="width:100%;height:100%;object-fit:cover;">{% else %}{{ m.name[0] }}{% endif %}
+              </div>
+              <span style="font-weight:600;color:var(--white);">{{ m.name }}</span>
+            </div>
+          </td>
+          <td style="color:var(--gold);font-size:0.85rem;font-family:var(--font-mono);">{{ m.role }}</td>
+          <td>
+            {% if m.portfolio_link %}
+              <a href="{{ m.portfolio_link }}" target="_blank" style="font-size:0.82rem;"><i class="fas fa-external-link-alt"></i> View</a>
+            {% else %}
+              <span style="color:var(--muted);font-size:0.82rem;">—</span>
+            {% endif %}
+          </td>
+          <td style="color:var(--muted);">{{ m.order_index }}</td>
+          <td>
+            <div style="display:flex;gap:8px;">
+              <a href="{{ url_for('admin.edit_member', mid=m.id) }}" class="btn btn-ghost" style="padding:5px 12px;font-size:0.78rem;"><i class="fas fa-edit"></i> Edit</a>
+              <form method="POST" action="{{ url_for('admin.delete_member', mid=m.id) }}" onsubmit="return confirm('Remove this member?')">
+                <button type="submit" class="btn" style="padding:5px 12px;font-size:0.78rem;background:rgba(239,68,68,0.1);color:#fca5a5;border:1px solid rgba(239,68,68,0.3);">
+                  <i class="fas fa-trash"></i>
+                </button>
+              </form>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:48px 0;">
+    <i class="fas fa-users" style="font-size:2.5rem;color:var(--gold);opacity:0.3;display:block;margin-bottom:12px;"></i>
+    <p style="color:var(--muted);">No team members yet.</p>
+    <a href="{{ url_for('admin.add_member') }}" class="btn btn-primary" style="margin-top:16px;">Add First Member</a>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

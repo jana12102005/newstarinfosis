@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Submit Idea – NewStar Infosis{% endblock %}
+{% block content %}
+<div class="dashboard-layout">
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-name">{{ current_user.name }}</div>
+      <div class="sidebar-role">User Account</div>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="{{ url_for('user.dashboard') }}"><i class="fas fa-th-large"></i> Dashboard</a>
+      <a href="{{ url_for('public.projects') }}"><i class="fas fa-code"></i> Browse Projects</a>
+      <a href="{{ url_for('user.submit_idea') }}" class="active"><i class="fas fa-lightbulb"></i> Submit Idea</a>
+      <a href="{{ url_for('user.mentorship') }}"><i class="fas fa-graduation-cap"></i> Mentorship</a>
+      <a href="{{ url_for('public.internships') }}"><i class="fas fa-briefcase"></i> Internships</a>
+      <a href="{{ url_for('auth.logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </nav>
+  </aside>
+  <div class="dashboard-content">
+    <div class="page-header">
+      <h1>Submit Your <span class="gold">Idea</span></h1>
+      <p>Have a project concept? Share it with us — we'll evaluate and build it!</p>
+    </div>
+    <div class="card-box" style="max-width:640px;">
+      <form method="POST">
+        <div class="admin-form">
+          <div class="form-group">
+            <label>Idea Title / Project Name *</label>
+            <input type="text" name="subject" placeholder="e.g. Smart Irrigation System using IoT" required>
+          </div>
+          <div class="form-group">
+            <label>Describe Your Idea *</label>
+            <textarea name="message" rows="7" placeholder="Explain your idea in detail. What problem does it solve? What technologies do you think are needed? What is your timeline?" required></textarea>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap;">
+            <button type="submit" class="btn btn-primary"><i class="fas fa-lightbulb"></i> Submit Idea</button>
+            <a href="{{ url_for('user.dashboard') }}" class="btn btn-ghost"><i class="fas fa-arrow-left"></i> Back</a>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

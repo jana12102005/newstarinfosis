@@ -1,0 +1,80 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Requests – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header">
+  <h1>Manage <span class="gold">Requests</span></h1>
+  <p>Review and update all project, idea, and mentorship requests.</p>
+</div>
+
+<!-- Filters -->
+<div class="card-box" style="padding:20px 28px;">
+  <form method="GET" style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end;">
+    <div>
+      <label style="display:block;font-size:0.8rem;color:var(--muted);margin-bottom:6px;">Type</label>
+      <select name="type" style="background:var(--bg-elevated);border:1px solid var(--border);color:var(--white);border-radius:8px;padding:8px 14px;font-size:0.88rem;outline:none;">
+        <option value="">All Types</option>
+        <option value="project"    {% if filter_type=='project'    %}selected{% endif %}>Project</option>
+        <option value="idea"       {% if filter_type=='idea'       %}selected{% endif %}>Idea</option>
+        <option value="mentorship" {% if filter_type=='mentorship' %}selected{% endif %}>Mentorship</option>
+        <option value="internship" {% if filter_type=='internship' %}selected{% endif %}>Internship</option>
+      </select>
+    </div>
+    <div>
+      <label style="display:block;font-size:0.8rem;color:var(--muted);margin-bottom:6px;">Status</label>
+      <select name="status" style="background:var(--bg-elevated);border:1px solid var(--border);color:var(--white);border-radius:8px;padding:8px 14px;font-size:0.88rem;outline:none;">
+        <option value="">All Status</option>
+        <option value="pending"   {% if filter_status=='pending'   %}selected{% endif %}>Pending</option>
+        <option value="reviewing" {% if filter_status=='reviewing' %}selected{% endif %}>Reviewing</option>
+        <option value="accepted"  {% if filter_status=='accepted'  %}selected{% endif %}>Accepted</option>
+        <option value="rejected"  {% if filter_status=='rejected'  %}selected{% endif %}>Rejected</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary" style="padding:9px 20px;">Filter</button>
+    <a href="{{ url_for('admin.requests') }}" class="btn btn-ghost" style="padding:9px 20px;">Clear</a>
+  </form>
+</div>
+
+<div class="card-box">
+  {% if requests %}
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>User</th><th>Email</th><th>Type</th><th>Subject</th><th>Message</th><th>Status</th><th>Date</th><th>Update</th></tr>
+      </thead>
+      <tbody>
+        {% for r in requests %}
+        <tr>
+          <td style="color:var(--muted);">{{ r.id }}</td>
+          <td style="font-weight:600;color:var(--white);">{{ r.user.name }}</td>
+          <td style="color:var(--muted);font-size:0.8rem;">{{ r.user.email }}</td>
+          <td><span class="badge-status status-reviewing" style="text-transform:capitalize;">{{ r.type }}</span></td>
+          <td style="max-width:160px;font-size:0.85rem;">{{ r.subject or '—' }}</td>
+          <td style="max-width:200px;color:var(--muted);font-size:0.8rem;">{{ r.message[:60] }}{% if r.message|length > 60 %}…{% endif %}</td>
+          <td><span class="badge-status status-{{ r.status }}">{{ r.status.title() }}</span></td>
+          <td style="color:var(--muted);font-size:0.78rem;">{{ r.created_at.strftime('%d %b %Y') }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin.update_request', rid=r.id) }}" style="display:flex;gap:6px;">
+              <select name="status" style="background:var(--bg-elevated);border:1px solid var(--border);color:var(--white);border-radius:6px;padding:4px 8px;font-size:0.75rem;outline:none;">
+                <option value="pending"   {% if r.status=='pending'   %}selected{% endif %}>Pending</option>
+                <option value="reviewing" {% if r.status=='reviewing' %}selected{% endif %}>Reviewing</option>
+                <option value="accepted"  {% if r.status=='accepted'  %}selected{% endif %}>Accepted</option>
+                <option value="rejected"  {% if r.status=='rejected'  %}selected{% endif %}>Rejected</option>
+              </select>
+              <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.72rem;">✓</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:48px 0;">
+    <i class="fas fa-inbox" style="font-size:2.5rem;color:var(--gold);opacity:0.3;display:block;margin-bottom:12px;"></i>
+    <p style="color:var(--muted);">No requests found.</p>
+  </div>
+  {% endif %}
+</div>
+
+{% endblock %}

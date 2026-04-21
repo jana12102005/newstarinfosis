@@ -1,0 +1,88 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Admin Dashboard – NewStar Infosis{% endblock %}
+{% block admin_content %}
+
+<div class="page-header">
+  <h1>Admin <span class="gold">Dashboard</span></h1>
+  <p>Overview of all NewStar Infosis activity.</p>
+</div>
+
+<!-- Stats -->
+<div class="stat-cards">
+  <div class="stat-card">
+    <div class="stat-card-icon"><i class="fas fa-users"></i></div>
+    <div><div class="stat-card-val">{{ stats.users }}</div><div class="stat-card-lbl">Total Users</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-icon"><i class="fas fa-code"></i></div>
+    <div><div class="stat-card-val">{{ stats.projects }}</div><div class="stat-card-lbl">Projects</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-icon"><i class="fas fa-file-alt"></i></div>
+    <div><div class="stat-card-val">{{ stats.requests }}</div><div class="stat-card-lbl">Requests</div></div>
+  </div>
+  <div class="stat-card" style="border-color:rgba(212,175,55,0.4);">
+    <div class="stat-card-icon" style="background:rgba(212,175,55,0.2);"><i class="fas fa-clock"></i></div>
+    <div><div class="stat-card-val" style="color:var(--gold);">{{ stats.pending }}</div><div class="stat-card-lbl">Pending</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-icon"><i class="fas fa-briefcase"></i></div>
+    <div><div class="stat-card-val">{{ stats.internships }}</div><div class="stat-card-lbl">Internship Apps</div></div>
+  </div>
+  <div class="stat-card">
+    <div class="stat-card-icon"><i class="fas fa-envelope"></i></div>
+    <div><div class="stat-card-val">{{ stats.contacts }}</div><div class="stat-card-lbl">Messages</div></div>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="card-box">
+  <h3>Quick Actions</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:12px;">
+    <a href="{{ url_for('admin.add_project') }}" class="btn btn-primary"><i class="fas fa-plus"></i> Add Project</a>
+    <a href="{{ url_for('admin.add_member') }}" class="btn btn-outline"><i class="fas fa-user-plus"></i> Add Team Member</a>
+    <a href="{{ url_for('admin.requests') }}" class="btn btn-ghost"><i class="fas fa-file-alt"></i> View Requests</a>
+    <a href="{{ url_for('admin.internships') }}" class="btn btn-ghost"><i class="fas fa-briefcase"></i> Internship Apps</a>
+  </div>
+</div>
+
+<!-- Recent Requests -->
+<div class="card-box">
+  <h3>Recent Requests</h3>
+  {% if recent_requests %}
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>User</th><th>Type</th><th>Subject</th><th>Status</th><th>Date</th><th>Action</th></tr>
+      </thead>
+      <tbody>
+        {% for r in recent_requests %}
+        <tr>
+          <td style="color:var(--muted);">{{ r.id }}</td>
+          <td>{{ r.user.name }}</td>
+          <td><span class="badge-status status-reviewing" style="text-transform:capitalize;">{{ r.type }}</span></td>
+          <td>{{ r.subject or (r.message[:35] + '…') }}</td>
+          <td><span class="badge-status status-{{ r.status }}">{{ r.status.title() }}</span></td>
+          <td style="color:var(--muted);font-size:0.8rem;">{{ r.created_at.strftime('%d %b %Y') }}</td>
+          <td>
+            <form method="POST" action="{{ url_for('admin.update_request', rid=r.id) }}" style="display:flex;gap:6px;align-items:center;">
+              <select name="status" style="background:var(--bg-elevated);border:1px solid var(--border);color:var(--white);border-radius:6px;padding:4px 8px;font-size:0.78rem;outline:none;">
+                <option value="pending"   {% if r.status=='pending'   %}selected{% endif %}>Pending</option>
+                <option value="reviewing" {% if r.status=='reviewing' %}selected{% endif %}>Reviewing</option>
+                <option value="accepted"  {% if r.status=='accepted'  %}selected{% endif %}>Accepted</option>
+                <option value="rejected"  {% if r.status=='rejected'  %}selected{% endif %}>Rejected</option>
+              </select>
+              <button type="submit" class="btn btn-ghost" style="padding:4px 10px;font-size:0.75rem;">Save</button>
+            </form>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <p style="color:var(--muted);text-align:center;padding:24px;">No requests yet.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

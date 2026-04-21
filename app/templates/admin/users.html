@@ -1,0 +1,44 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Users – Admin{% endblock %}
+{% block admin_content %}
+
+<div class="page-header">
+  <h1>All <span class="gold">Users</span></h1>
+  <p>{{ users|length }} registered accounts.</p>
+</div>
+
+<div class="card-box">
+  <div style="overflow-x:auto;">
+    <table class="data-table">
+      <thead>
+        <tr><th>#</th><th>Name</th><th>Email</th><th>Verified</th><th>Admin</th><th>Joined</th></tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+        <tr>
+          <td style="color:var(--muted);">{{ u.id }}</td>
+          <td style="font-weight:600;color:var(--white);">{{ u.name }}</td>
+          <td style="color:var(--muted);font-size:0.85rem;">{{ u.email }}</td>
+          <td>
+            {% if u.is_verified %}
+              <span class="badge-status status-accepted">✓ Yes</span>
+            {% else %}
+              <span class="badge-status status-rejected">✗ No</span>
+            {% endif %}
+          </td>
+          <td>
+            {% if u.is_admin %}
+              <span class="badge-status status-pending" style="color:var(--gold);">Admin</span>
+            {% else %}
+              <span style="color:var(--muted);font-size:0.8rem;">User</span>
+            {% endif %}
+          </td>
+          <td style="color:var(--muted);font-size:0.8rem;">{{ u.created_at.strftime('%d %b %Y') }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+{% endblock %}
